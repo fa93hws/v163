@@ -3,7 +3,9 @@
     "extends": [
         "tslint-config-standard" 
     ],    
-    "jsRules": {},
+    "jsRules": {
+        "semicolon": [true, "always"]
+    },
     "rules": {},
     "rulesDirectory": []
 }

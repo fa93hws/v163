@@ -1,15 +1,22 @@
 <template>
   <div class = 'live-container'>
     <div class = 'empty-element'>&nbsp;</div>
-    <div class = 'live-player-wrapper center'>
-      <div class = 'live-player'>
+    <div 
+      class = 'live-player-wrapper center'
+      v-bind:style="{width: playerDimension[0]+'px'}"
+    >
+      <div 
+        class = 'live-player'
+        v-bind:style="{width: playerDimension[0]+'px', height: playerDimension[1]+'px'}"
+      >
         player here
       </div>
+      <!-- tool bar  -->
       <div class = 'live-player-toolbar clear-fix clearfix'>
         <!-- toolbar title -->
         <div class = 'live-player-toolbar-info'>
-          <h2>{{liveInfo.title}}</h2>
-          <span>{{formatNumber(liveInfo.viewersCount)}}参与</span>
+          <h2>{{selectedVideo.title}}</h2>
+          <span>{{formattedNumber}}参与</span>
         </div>
         <!-- right icons group -->
         <div class = 'live-player-toolbar-interaction float-right'>
@@ -30,14 +37,21 @@
             </li>
           </ul>
         </div>
+        <!-- end of right icons group -->
       </div>
+      <!-- end of tool bar  -->
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue, { VNode } from 'vue'
+import {Getter} from 'vuex-class';
+import {VideoInfo} from '@/types';
+import {Watch} from 'vue-property-decorator';
 import Component from 'vue-class-component';
+
+import Vue, { VNode } from 'vue'
+import Utils from '../api/Utils';
 
 @Component
 export default class HomeMainLive extends Vue {
@@ -45,28 +59,20 @@ export default class HomeMainLive extends Vue {
   $refs!: {
     shareToIcon: [HTMLElement];
   }
+
   // data
   shareTo: string[] = ['yixin','wechat','weibo','qzone'];
+
   // computed
-  get liveInfo () {
-    return {
-      url: '',
-      title: '直击猎豹与狮子对决 谁才是最后赢家？',
-      viewersCount: 333000
-    }
+  @Getter('Dimension/livePlayerDimension') playerDimension!: number[];
+  @Getter('Video/selected') selectedVideo!: VideoInfo;
+  get formattedNumber (): string {
+    return Utils.escapeNumAudience(this.selectedVideo.numAudience);
   }
+
   // methods
-  formatNumber = function(x: number): string {
-    if (x < 10000)
-      return x.toString();
-    else if (x < 100000000)
-      return (x/10000).toFixed(1).toString() + '万';
-    else
-      return (x/100000000).toFixed(1).toString() + '亿';
-  }
-  toggleAnimation = function(this: HomeMainLive, id: number): void {
+  toggleAnimation (this: HomeMainLive, id: number): void {
     var classList: DOMTokenList = this.$refs.shareToIcon[id].classList;
-    console.log('toggle');
     if (classList.length < 2) {
       classList.add('hover');
     } else if (classList.contains('hover')) {
@@ -82,17 +88,17 @@ export default class HomeMainLive extends Vue {
 @import '../assets/styles/variables.less';
 .live-container {
   width: 100%;
-  height: 645px;
   background: url(/static/bg.png) center center no-repeat;
+  background-size: cover;
 
   .live-player-wrapper {
     margin-top: @margin-large;
-    width: 960px;
-    height: 565px;    
+    // width: 960px;
+    height: 100%;
 
     .live-player {
       width: 100%;
-      height: 540px;
+      height: 545px;
       background: silver;
     }
     .live-player-toolbar {
@@ -100,12 +106,15 @@ export default class HomeMainLive extends Vue {
       padding-top: @margin-medium;
       width: 100%;
       height: 54px;
-      // background: url(/static/title_bg.png) center center no-repeat;
+      background: url(/static/title_bg.png) center center no-repeat;
       background-size: cover;
 
       .live-player-toolbar-info {
         display: inline-block;
         margin-left: @margin-xsmall;
+        position: relative;
+        top: 50%;
+        transform: translateY(-100%);
         h2 {
           display: inline-block;
           font-size: @font-xlarge;
@@ -113,6 +122,7 @@ export default class HomeMainLive extends Vue {
         }
         span {
           display: inline-block;
+          vertical-align: top;
           margin-left: @margin-xsmall;
           padding: 7px @margin-xsmall;
           border-radius: 15px;
@@ -123,13 +133,16 @@ export default class HomeMainLive extends Vue {
       } // end of live-player-toolbar-title
       .live-player-toolbar-interaction {
         display: inline-block;
-        margin-right: @margin-xsmall;
+        position: relative;
+        top: 50%;
+        transform: translateY(-100%);
+
         span {
           display: inline-block;
+          vertical-align: top;
           width: 100px;
-          height: 28px;
+          height: 29px;
           background-image: url(/static/enter_icon.png);
-          margin-top: @margin-xxxsmall;
         }
         span:hover {
           background-position: 0 -29px;
@@ -137,23 +150,23 @@ export default class HomeMainLive extends Vue {
         ul {
           display: inline-block;
           vertical-align: top;
-          margin-left: @margin-xxsmall;
+          margin-right: @margin-xsmall;
           li {
             display: inline-block;
             margin-left: @margin-xsmall;
-            width: 25px;
-            height: 25px;
-            border-radius: 25px;
+            width: 22px;
+            height: 22px;
+            border-radius: 22px;
             border-color: @theme-grey;
             border-style: solid;
             border-width: 1px;
             z-index: 10;
             i {
               display: inline-block;
-              width: 17px;
-              height: 17px;
+              width: 16px;
+              height: 16px;
               background-size: cover;
-              margin: 4px;
+              margin: 3px;
               z-index: 9;
             }
             i.release {
@@ -179,12 +192,12 @@ export default class HomeMainLive extends Vue {
     background-position: 0px -25px;
   }
   100% {
-    background-position: 0px -17px;
+    background-position: 0px -16px;
   }
 }
 @keyframes anime-release {
   0% {
-    background-position: 0px -17px;
+    background-position: 0px -16px;
   }
   90% {
     background-position: 0px 8px;

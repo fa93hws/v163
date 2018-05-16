@@ -8,11 +8,11 @@
 <script lang="ts">
 // types
 import Component from 'vue-class-component';
-import {Watch} from 'vue-property-decorator';
-import {Dimension} from '../store/Dimension';
-import {Getter} from 'vuex-class';
+import { Watch } from 'vue-property-decorator';
+import { Dimension } from '../store/Dimension';
+import { Getter } from 'vuex-class';
 
-import Vue from 'vue'
+import Vue from 'vue';
 import HomeMain from '../components/HomeMain.vue';
 import RightNav from '../components/RightNav';
 

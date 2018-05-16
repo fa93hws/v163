@@ -18,7 +18,7 @@ export const state: Dimension = {
   liveMainWidth: 0,
   livePlayerWidth: 0,
   livePlayerHeight: 0,
-  className: 'large',
+  className: 'large'
 };
 
 // getters

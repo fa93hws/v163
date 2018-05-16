@@ -12,7 +12,10 @@
         player here
       </div>
       <!-- tool bar  -->
-      <div class = 'live-player-toolbar clear-fix clearfix'>
+      <div
+        class = 'live-player-toolbar clear-fix clearfix'
+        v-bind:class="sizeClass"
+      >
         <!-- toolbar title -->
         <div class = 'live-player-toolbar-info'>
           <h2>{{selectedVideo.title}}</h2>
@@ -45,12 +48,12 @@
 </template>
 
 <script lang="ts">
-import {Getter} from 'vuex-class';
-import {VideoInfo} from '@/types';
-import {Watch} from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
+import { VideoInfo,VideoType } from '@/types';
+import { Watch } from 'vue-property-decorator';
 import Component from 'vue-class-component';
 
-import Vue, { VNode } from 'vue'
+import Vue, { VNode } from 'vue';
 import Utils from '../api/Utils';
 
 @Component
@@ -58,13 +61,14 @@ export default class HomeMainLive extends Vue {
   // define types
   $refs!: {
     shareToIcon: [HTMLElement];
-  }
+  };
 
   // data
   shareTo: string[] = ['yixin','wechat','weibo','qzone'];
 
   // computed
   @Getter('Dimension/livePlayerDimension') playerDimension!: number[];
+  @Getter('Dimension/className') sizeClass!: string;
   @Getter('Video/selected') selectedVideo!: VideoInfo;
   get formattedNumber (): string {
     return Utils.escapeNumAudience(this.selectedVideo.numAudience);
@@ -72,13 +76,13 @@ export default class HomeMainLive extends Vue {
 
   // methods
   toggleAnimation (this: HomeMainLive, id: number): void {
-    var classList: DOMTokenList = this.$refs.shareToIcon[id].classList;
+    let classList: DOMTokenList = this.$refs.shareToIcon[id].classList;
     if (classList.length < 2) {
       classList.add('hover');
     } else if (classList.contains('hover')) {
       classList.replace('hover','release');
     } else if (classList.contains('release')) {
-      classList.replace('release','hover')
+      classList.replace('release','hover');
     }
   }
 }

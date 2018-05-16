@@ -14,10 +14,10 @@
 
 <script lang="ts">
 // types
-import {Getter} from 'vuex-class'
+import { Getter } from 'vuex-class';
 import Component from 'vue-class-component';
-import {Watch} from 'vue-property-decorator';
-import {VideoInfo} from '@/types';
+import { Watch } from 'vue-property-decorator';
+import { VideoInfo,VideoType } from '@/types';
 
 import Vue from 'vue';
 import OnAir from './OnAir.vue';
@@ -35,12 +35,11 @@ export default class RightNav extends Vue {
   showOnAir: boolean = true;
   // computed
   @Getter('Dimension/rightNavWidth') navWidth!: number;
-  get sortedLives (): VideoInfo[][] {
-    let raw: VideoInfo[] = (<any>fakeData);
-    let onAirLive: VideoInfo[] = raw.filter((x: VideoInfo) => x.status<2)
-    let trailers: VideoInfo[] = raw.filter((x: VideoInfo) => x.status==2)
-    return [onAirLive, trailers];
-  }
+  // get sortedLives (): VideoInfo[][] {
+  //   let onAirLive: VideoInfo[] = raw.filter((x: VideoInfo) => x.type === VideoType.live || x.type === VideoType.record);
+  //   let trailers: VideoInfo[] = raw.filter((x: VideoInfo) => x.type === VideoType.trailer);
+  //   return [onAirLive, trailers];
+  // }
 
   // methods
   onScroll (): void {

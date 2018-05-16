@@ -28,13 +28,13 @@
 
 <script lang="ts">
 // type
-import {VideoInfo} from '@/types';
-import {Getter,Action} from 'vuex-class';
+import { VideoInfo,VideoType } from '@/types';
+import { Getter,Action } from 'vuex-class';
 import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import { Prop } from 'vue-property-decorator';
 
 import Vue from 'vue';
-import Card from './Card.vue'
+import Card from './Card.vue';
 
 // fakedata
 import * as fakeData from './fakedata.json';
@@ -50,15 +50,15 @@ export default class OnAir extends Vue {
   @Getter('Video/liveList') lives!: VideoInfo[];
   @Getter('Video/recordList') reocrds!: VideoInfo[];
   @Getter('Video/selectedIdx') selectedIdx!: number;
-  @Getter('Video/selectedType') selectedType!: string;
+  @Getter('Video/selectedType') selectedType!: VideoType;
 
   get liveCount (): number {
-    return this.lives.filter((x: VideoInfo) => x.status==0).length;
+    return this.lives.filter((x: VideoInfo) => x.type === VideoType.live).length;
   }
   get sortedLiveInfos (): VideoInfo[] {
     return [...this.lives, ...this.reocrds];
   }
-  get activeTab(): number {
+  get activeTab (): number {
     return this.getActiveTabFromSelect(this.selectedIdx, this.selectedType);
   }
 
@@ -66,27 +66,27 @@ export default class OnAir extends Vue {
   @Action('Video/selectVideo')
   dispatchSelect!: any;
 
-  doSelect(active: number) {
+  doSelect (active: number) {
     this.dispatchSelect(this.getSelectFromActiveTab(active));
   }
-  getActiveTabFromSelect(idx: number, type: string): number {
-    if (type==='record'){
+  getActiveTabFromSelect (idx: number, type: VideoType): number {
+    if (type === VideoType.record) {
       return idx - this.lives.length;
     } else {
       return idx;
     }
   }
-  getSelectFromActiveTab(active: number): any {
+  getSelectFromActiveTab (active: number): any {
     if (active >= this.lives.length) {
       return {
         idx: active - this.lives.length,
-        typ: 'record'
-      }
+        type: VideoType.record
+      };
     } else {
       return {
         idx: active,
-        typ: 'live'
-      }
+        type: VideoType.live
+      };
     }
   }
   // mounted

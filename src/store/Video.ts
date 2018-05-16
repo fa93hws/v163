@@ -1,7 +1,7 @@
 import * as raw from './fakedata.json';
 // video.ts
 import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
-import { RootState, VideoInfo } from '../types';
+import { RootState, VideoInfo, VideoType } from '../types';
 
 // types
 export interface Video {
@@ -9,11 +9,11 @@ export interface Video {
   records: VideoInfo[];
   trailers: VideoInfo[];
   selectedIdx: number;
-  selectedType: string;
+  selectedType: VideoType;
 }
 interface SelectInfo {
   idx: number;
-  typ: string;
+  type: VideoType;
 }
 // state
 export const state: Video = {
@@ -21,31 +21,31 @@ export const state: Video = {
   records: [],
   trailers: [],
   selectedIdx: 0,
-  selectedType: 'live',
+  selectedType: VideoType.live
 };
 
 // getters
 export const getters: GetterTree<Video, RootState> = {
-  liveList(state): VideoInfo[] {
+  liveList (state): VideoInfo[] {
     return state.lives;
   },
-  recordList(state): VideoInfo[] {
+  recordList (state): VideoInfo[] {
     return state.records;
   },
-  trailerList(state): VideoInfo[] {
+  trailerList (state): VideoInfo[] {
     return state.trailers;
   },
-  selectedIdx(state): number {
+  selectedIdx (state): number {
     return state.selectedIdx;
   },
-  selectedType(state): string {
+  selectedType (state): VideoType {
     return state.selectedType;
   },
-  selected(state): VideoInfo {
+  selected (state): VideoInfo {
     switch (state.selectedType) {
-      case 'live':
+      case VideoType.live:
         return state.lives[state.selectedIdx];
-      case 'record':
+      case VideoType.record:
         return state.records[state.selectedIdx];
       default:
         return state.trailers[state.selectedIdx];
@@ -55,14 +55,17 @@ export const getters: GetterTree<Video, RootState> = {
 
 // actions
 export const actions: ActionTree<Video, RootState> = {
-  fetchData: function({commit}): void {
-    let allVideos = (<any>raw);
-    let liveList = allVideos.filter((v: VideoInfo) => v.status==0);
-    let recordList = allVideos.filter((v: VideoInfo) => v.status==1);
-    let trailerList = allVideos.filter((v: VideoInfo) => v.status==2);
-    commit('updateVideos', {liveList, recordList, trailerList});
+  fetchData: function ({ commit }): void {
+    let allVideos = raw as any;
+    allVideos.map((v: any) => { v.type = v.status; });
+    console.log(allVideos);
+    // console.log(allVideos);
+    let liveList = allVideos.filter((v: VideoInfo) => v.type === VideoType.live);
+    let recordList = allVideos.filter((v: VideoInfo) => v.type === VideoType.record);
+    let trailerList = allVideos.filter((v: VideoInfo) => v.type === VideoType.trailer);
+    commit('updateVideos', { liveList, recordList, trailerList });
   },
-  selectVideo: function({commit}, selectInfo: SelectInfo): void {
+  selectVideo: function ({ commit }, selectInfo: SelectInfo): void {
     commit('updateSelect', selectInfo);
   }
 };
@@ -70,16 +73,16 @@ export const actions: ActionTree<Video, RootState> = {
 // mutations
 export const mutations: MutationTree<Video> = {
   updateVideos: function (state, videos): void {
-    let {liveList , recordList, trailerList} = videos;
+    let { liveList , recordList, trailerList } = videos;
     state.lives = liveList;
     state.records = recordList;
     state.trailers = trailerList;
     state.selectedIdx = 0;
-    state.selectedType = state.lives.length > 0 ? 'live' : 'record';
+    state.selectedType = state.lives.length > 0 ? VideoType.live : VideoType.record;
   },
-  updateSelect: function(state, selectInfo: SelectInfo): void {
+  updateSelect: function (state, selectInfo: SelectInfo): void {
     state.selectedIdx = selectInfo.idx;
-    state.selectedType = selectInfo.typ;
+    state.selectedType = selectInfo.type;
   }
 };
 

@@ -32,10 +32,10 @@
 
 <script lang='ts'>
 // type
-import {Getter} from 'vuex-class';
-import {Watch, Prop} from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
+import { Watch, Prop } from 'vue-property-decorator';
 import Component from 'vue-class-component';
-import {VideoInfo} from '@/types';
+import { VideoInfo } from '@/types';
 
 import Vue from 'vue';
 import Utils from '../../api/Utils';
@@ -43,9 +43,9 @@ import Utils from '../../api/Utils';
 @Component
 export default class Card extends Vue {
   // props
-  @Prop({required: true})
+  @Prop({ required: true })
   info!: VideoInfo;
-  @Prop({default: false})
+  @Prop({ default: false })
   active!: boolean;
 
   // computed

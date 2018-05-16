@@ -140,7 +140,7 @@ export default class Card extends Vue {
     -webkit-line-clamp: 3;
   }
   .card-title:not(.active) p {
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
   }
   .card-title.medium.active {
     width: 115px;

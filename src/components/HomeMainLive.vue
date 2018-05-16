@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { Getter } from 'vuex-class';
-import { VideoInfo,VideoType } from '@/types';
+import { VideoInfo,VideoType } from '../types';
 import { Watch } from 'vue-property-decorator';
 import Component from 'vue-class-component';
 
@@ -68,7 +68,7 @@ export default class HomeMainLive extends Vue {
 
   // computed
   @Getter('Dimension/livePlayerDimension') playerDimension!: number[];
-  @Getter('Dimension/className') sizeClass!: string;
+  @Getter('Dimension/classNameTwo') sizeClass!: string;
   @Getter('Video/selected') selectedVideo!: VideoInfo;
   get formattedNumber (): string {
     return Utils.escapeNumAudience(this.selectedVideo.numAudience);
@@ -97,7 +97,6 @@ export default class HomeMainLive extends Vue {
 
   .live-player-wrapper {
     margin-top: @margin-large;
-    // width: 960px;
     height: 100%;
 
     .live-player {
@@ -105,8 +104,47 @@ export default class HomeMainLive extends Vue {
       height: 545px;
       background: silver;
     }
+    .live-player-toolbar.medium {
+      .live-player-toolbar-info {
+        margin-left: @margin-xxsmall;
+
+        h2 {
+          font-size: @font-medium;
+        }
+        span {
+          margin-top: -3px;
+          margin-left: 5px;
+          padding: 7px 8px;          
+        }
+      }
+      .live-player-toolbar-interaction {
+        ul {
+          max-width: 126px;
+          li {
+            margin-left: @margin-xxsmall;
+          }
+        }
+      }
+    }
+    .live-player-toolbar.large {
+      .live-player-toolbar-info {
+        margin-left: @margin-xsmall;
+
+        h2 {
+          font-size: @font-xlarge;
+        }
+        span {
+          margin-left: @margin-xsmall;
+          padding: 7px @margin-xsmall;
+        }
+      }
+      .live-player-toolbar-interaction {
+        li {
+          margin-left: @margin-xsmall;
+        }
+      }
+    }
     .live-player-toolbar {
-      // margin-top: @margin-xxsmall;
       padding-top: @margin-medium;
       width: 100%;
       height: 54px;
@@ -115,20 +153,21 @@ export default class HomeMainLive extends Vue {
 
       .live-player-toolbar-info {
         display: inline-block;
-        margin-left: @margin-xsmall;
         position: relative;
+        max-width: 60%;
         top: 50%;
         transform: translateY(-100%);
         h2 {
+          max-width: 70%;
           display: inline-block;
-          font-size: @font-xlarge;
           color: @theme-white;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         span {
           display: inline-block;
           vertical-align: top;
-          margin-left: @margin-xsmall;
-          padding: 7px @margin-xsmall;
           border-radius: 15px;
           font-size: @font-xsmall;
           background: rgba(12,20,33,0.7);
@@ -157,7 +196,6 @@ export default class HomeMainLive extends Vue {
           margin-right: @margin-xsmall;
           li {
             display: inline-block;
-            margin-left: @margin-xsmall;
             width: 22px;
             height: 22px;
             border-radius: 22px;

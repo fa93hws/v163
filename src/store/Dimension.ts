@@ -1,8 +1,8 @@
-// ContainerWidth.ts
+
 import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { RootState } from '../types';
 // types
-export interface Dimension {
+interface Dimension {
   windowWidth: number;
   rightNavWidth: number;
   liveMainWidth: number;
@@ -35,14 +35,17 @@ export const getters: GetterTree<Dimension, RootState> = {
   livePlayerDimension: function (state): number[] {
     return [state.livePlayerWidth, state.livePlayerHeight];
   },
-  className: function(state): string {
+  className: function (state): string {
     return state.className;
+  },
+  classNameTwo: function (state): string {
+    return state.className === 'large' ? 'large' : 'medium';
   }
 };
 
 // actions
 export const actions: ActionTree<Dimension, RootState> = {
-  onWindowResize: function({commit}): void {
+  onWindowResize: function({ commit }): void {
     commit('updateDimensions', window.innerWidth);
   }
 };
@@ -62,7 +65,7 @@ export const mutations: MutationTree<Dimension> = {
       state.livePlayerWidth = 640;
       state.livePlayerHeight = 360;
     }
-    state.liveMainWidth = windowWidth - state.rightNavWidth + 5;
+    state.liveMainWidth = windowWidth - state.rightNavWidth + 20;
   }
 };
 

@@ -1,7 +1,7 @@
 <template>
   <div
     class="right-nav-container"
-    v-bind:style="{width: navWidth + 'px'}"
+    v-bind:class="sizeClass"
   >
     <OnAir
       v-if="showOnAir"
@@ -14,10 +14,10 @@
 
 <script lang="ts">
 // types
-import { Getter } from 'vuex-class';
+import { Getter,Action } from 'vuex-class';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
-import { VideoInfo,VideoType } from '@/types';
+import { VideoInfo,VideoType } from '../../types';
 
 import Vue from 'vue';
 import OnAir from './OnAir.vue';
@@ -34,14 +34,14 @@ export default class RightNav extends Vue {
   // data
   showOnAir: boolean = true;
   // computed
-  @Getter('Dimension/rightNavWidth') navWidth!: number;
-  // get sortedLives (): VideoInfo[][] {
-  //   let onAirLive: VideoInfo[] = raw.filter((x: VideoInfo) => x.type === VideoType.live || x.type === VideoType.record);
-  //   let trailers: VideoInfo[] = raw.filter((x: VideoInfo) => x.type === VideoType.trailer);
-  //   return [onAirLive, trailers];
-  // }
+  @Getter('Dimension/className') sizeClass!: string;
 
   // methods
+  @Action('DOMHome/mouseEnterRightNav')
+  mouseEnter!: void;
+  @Action('DOMHome/mouseLeaveRightNav')
+  mouseLeave!: void;
+
   onScroll (): void {
     let scroll = window.scrollY;
     if (scroll >= 460 && this.showOnAir) {
@@ -61,6 +61,15 @@ export default class RightNav extends Vue {
 </script>
 
 <style lang="less" scoped>
+.right-nav-container.small,
+.right-nav-container.medium {
+  background: url(/static/right_side_bg1.png) repeat-y;
+  width: 320px;
+}
+.right-nav-container.large {
+  background: url(/static/right_side_bg.png) repeat-y;
+  width: 420px;
+}
 .right-nav-container {
   display: inline-block;
   position: fixed;
@@ -69,6 +78,5 @@ export default class RightNav extends Vue {
   z-index:20;
   height: 100%;
   min-height: 100%;
-  background: url(/static/right_side_bg.png) repeat-y;
 }
 </style>

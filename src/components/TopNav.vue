@@ -106,6 +106,7 @@ export default class TopNav extends Vue {
   }
   .topnav-left-list-item {
     display: inline-block;
+    text-decoration: none;
     text-align: left;
   }
   .topnav-left-list-item:first-of-type {
@@ -124,8 +125,8 @@ export default class TopNav extends Vue {
     background: url(/static/nav_line.png) no-repeat;
   }
   em.large {
-    margin-left: 27px;
-    margin-right: 27px;
+    margin-left: @margin-large;
+    margin-right: @margin-large;
   }
   em.medium {
     margin-left: 15px;

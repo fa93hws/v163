@@ -1,8 +1,19 @@
 <template>
-  <div class = 'live-list-container'>
-    <div class = 'live-counter-border'>
+  <div
+    class = 'live-list-container'
+    v-bind:style="{top:scrollDistance+'px'}"
+    ref="onAirList"
+    @mousewheel.prevent="scrollEvent"
+  >
+    <div 
+      class = 'live-counter-border'
+      v-bind:class="sizeClass"
+    >
     </div>
-    <div class = 'live-list-title'>
+    <div
+      class = 'live-list-title'
+      v-bind:class="sizeClass"
+    >
       <div class = 'live-list-counter-anime'>
         <span
           v-for="n in 6"
@@ -28,7 +39,7 @@
 
 <script lang="ts">
 // type
-import { VideoInfo,VideoType } from '@/types';
+import { VideoInfo,VideoType } from '../../types';
 import { Getter,Action } from 'vuex-class';
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
@@ -36,27 +47,30 @@ import { Prop } from 'vue-property-decorator';
 import Vue from 'vue';
 import Card from './Card.vue';
 
-// fakedata
-import * as fakeData from './fakedata.json';
-
 @Component({
   components: {
     Card
   }
 })
 export default class OnAir extends Vue {
+  // type
+  scrollDistance: number = 0;
+  $refs!: {
+    onAirList: HTMLElement;
+  }
   // data
   // computed
   @Getter('Video/liveList') lives!: VideoInfo[];
-  @Getter('Video/recordList') reocrds!: VideoInfo[];
+  @Getter('Video/recordList') records!: VideoInfo[];
   @Getter('Video/selectedIdx') selectedIdx!: number;
+  @Getter('Dimension/classNameTwo') sizeClass!: string;
   @Getter('Video/selectedType') selectedType!: VideoType;
 
   get liveCount (): number {
     return this.lives.filter((x: VideoInfo) => x.type === VideoType.live).length;
   }
   get sortedLiveInfos (): VideoInfo[] {
-    return [...this.lives, ...this.reocrds];
+    return [...this.lives, ...this.records];
   }
   get activeTab (): number {
     return this.getActiveTabFromSelect(this.selectedIdx, this.selectedType);
@@ -65,13 +79,21 @@ export default class OnAir extends Vue {
   // methods
   @Action('Video/selectVideo')
   dispatchSelect!: any;
+  get maxScrollDistance (): number {
+    let maxDist = 22 + 15 + 20; // from title
+    maxDist += 80+21+21+1; // from active tab
+    maxDist += (80+15+15+1) * (this.lives.length + this.records.length - 1);// from the rest
+    maxDist += 71; // from top nav
+    maxDist -= window.innerHeight; // minus window height
+    return maxDist;
+  }
 
   doSelect (active: number) {
     this.dispatchSelect(this.getSelectFromActiveTab(active));
   }
   getActiveTabFromSelect (idx: number, type: VideoType): number {
     if (type === VideoType.record) {
-      return idx - this.lives.length;
+      return idx + this.lives.length;
     } else {
       return idx;
     }
@@ -89,8 +111,18 @@ export default class OnAir extends Vue {
       };
     }
   }
+  scrollEvent (e: WheelEvent): void {
+    let tempScrollDist = this.scrollDistance - e.deltaY;
+    if (tempScrollDist > 0){
+      tempScrollDist = 0;
+      console.log('top');
+    } else if (tempScrollDist < -this.maxScrollDistance){
+      tempScrollDist = -this.maxScrollDistance;
+      console.log('bottom');
+    }
+    this.scrollDistance = tempScrollDist;
+  }
   // mounted
-
 }
 </script>
 
@@ -101,7 +133,7 @@ export default class OnAir extends Vue {
   .live-list-count-@{i} {
     position: absolute;
     top: @counter_distance - @i * @counter_distance;
-    left: 0;
+    top: 0px;
     width: 41px;
     height: 22px;
     display: block;
@@ -113,7 +145,12 @@ export default class OnAir extends Vue {
 
 .live-list-container {
   position: relative;
-  top: 0px;
+}
+.live-counter-border.medium {
+  left: 35px;
+}
+.live-counter-border.large {
+  left: 40px;
 }
 .live-counter-border {
   width: 41px;
@@ -121,13 +158,17 @@ export default class OnAir extends Vue {
   background: url(/static/num_bg.png) left center no-repeat;
   position: absolute;
   top: -3px;
-  left: 40px;
+}
+.live-list-title.medium {
+  margin: 15px 0 15px 35px;
+}
+.live-list-title.large {
+  margin: 15px 0 20px 40px;
 }
 .live-list-title {
   font-family: "Microsoft Yahei";
   color: #f0f0f0;
   font-size: @font-large;
-  margin: 15px 0 20px 40px;
   position: relative;
   overflow: hidden;
   height: 22px;
@@ -135,14 +176,8 @@ export default class OnAir extends Vue {
 
   .live-list-counter-anime {
     animation: slide-in-from-top 0.5s;
-    // transform: translateY(25px);
-    // animation-name: slideInFromTop;
-    // animation-duration: 4s;
-
     .generate-counters(6);
-
   } // end of live-list-counter-anime
-
   h2 {
     padding-left: 51px;
     font-weight: normal;

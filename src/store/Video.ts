@@ -58,8 +58,6 @@ export const actions: ActionTree<Video, RootState> = {
   fetchData: function ({ commit }): void {
     let allVideos = raw as any;
     allVideos.map((v: any) => { v.type = v.status; });
-    console.log(allVideos);
-    // console.log(allVideos);
     let liveList = allVideos.filter((v: VideoInfo) => v.type === VideoType.live);
     let recordList = allVideos.filter((v: VideoInfo) => v.type === VideoType.record);
     let trailerList = allVideos.filter((v: VideoInfo) => v.type === VideoType.trailer);

@@ -1,15 +1,14 @@
 export interface RootState {
 }
 export enum VideoType {
-  live = 1,
-  record = 2,
-  trailer = 3
+  live = 0,
+  record = 1,
+  trailer = 2
 }
 export interface VideoInfo {
   imgUrl: string;
   title: string;
   numAudience: number;
   href: string;
-  // status: number;
   type: VideoType;
 }

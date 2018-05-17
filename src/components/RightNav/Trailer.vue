@@ -1,6 +1,6 @@
 <template>
   <div
-    class = 'rightnav-list-container'
+    v-bind:class="['rightnav-list-container',sizeClass]"
     v-bind:style="{top:scrollDistance+'px'}"
     ref="onAirList"
     @mousewheel.prevent="scrollEvent"
@@ -126,10 +126,21 @@ export default class LiveTrailer extends Vue {
 
 <style lang="less" scoped>
 @import './style.less';
+// multi screen adaptivity
+.rightnav-list-container.large {
+  .trailer-list-container {
+    margin: 15px 10px 0 40px;
+  }
+}
+.rightnav-list-container.medium {
+  .trailer-list-container {
+    margin: 15px 10px 0 35px;
+  }
+}
+// end of multi screen adaptivity
 .trailer-list-container {
   position: relative;
   top: 0px;
-  margin: 15px 10px 0 40px;
   padding-bottom: 15px;
 }
 .trailer-list-byday-container {

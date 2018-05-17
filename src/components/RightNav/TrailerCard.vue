@@ -1,9 +1,9 @@
 <template>
-  <li class = 'trailer-item clearfix'>
-    <span class = 'trailer-item-time'>
+  <li v-bind:class="['trailer-item clearfix',sizeClass]">
+    <span class='trailer-item-time'>
       {{trailerInfo.timeOnAir.format('HH:mm')}}
     </span><!--
- --><span class = 'trailer-item-title-container'>
+ --><span class='trailer-item-title-container'>
       <a>
         {{trailerInfo.title}}
       </a>
@@ -13,6 +13,7 @@
 
 <script lang="ts">
 // types
+import { Getter } from 'vuex-class';
 import { TrailerInfo } from '../../types';
 import Component from 'vue-class-component';
 import { Watch, Prop } from 'vue-property-decorator';
@@ -23,6 +24,7 @@ import Vue from 'vue';
 export default class TrailerCard extends Vue {
   @Prop({required: true})
   trailerInfo!: TrailerInfo;
+  @Getter('Dimension/classNameTwo') sizeClass!: string;
 }
 </script>
 
@@ -31,8 +33,6 @@ export default class TrailerCard extends Vue {
   position: relative;
   display: block;
   width: 100%;
-  background: url(/static/bar_line.png) no-repeat;
-  background-position: -20px bottom;
   span {
     display: inline-block;
     vertical-align: top;
@@ -62,6 +62,25 @@ export default class TrailerCard extends Vue {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
-
+}
+.trailer-item.large {
+  background: url(/static/bar_line.png) no-repeat;
+  background-position: -20px bottom;
+  .trailer-item-time {
+    margin-left: 15px;
+  }
+  .trailer-item-title-container {
+    width: 255px;
+  }
+}
+.trailer-item.medium {
+  background: url(/static/bar_line1.png) no-repeat;
+  background-position: -20px bottom;
+  .trailer-item-time {
+    margin-left: 10px;
+  }
+  .trailer-item-title-container {
+    width: 175px;
+  }
 }
 </style>

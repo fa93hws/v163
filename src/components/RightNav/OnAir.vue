@@ -1,34 +1,36 @@
 <template>
   <div
-    class = 'live-list-container'
+    class = 'rightnav-list-container'
     v-bind:style="{top:scrollDistance+'px'}"
     ref="onAirList"
     @mousewheel.prevent="scrollEvent"
   >
     <div 
-      class = 'live-counter-border'
+      class = 'rightnav-counter-border'
       v-bind:class="sizeClass"
     >
     </div>
     <div
-      class = 'live-list-title'
+      class = 'rightnav-list-title'
       v-bind:class="sizeClass"
     >
-      <div class = 'live-list-counter-anime'>
+      <div class = 'rightnav-list-counter-anime'>
         <span
           v-for="n in 6"
           v-bind:key="n"
-          v-bind:class="'live-list-count-'+n"
+          v-bind:class="'rightnav-list-count-'+n"
         >
           {{liveCount}}
         </span>
       </div>
       <h2>正在直播</h2>
     </div>
+    <!-- live list -->
     <ul class = 'live-list'>
       <Card
         v-for="(liveInfo, index) in sortedLiveInfos"
         v-bind:key="index"
+        ref="onAirCard"
         :info="sortedLiveInfos[index]"
         :active="activeTab==index"
         @mousedown="doSelect(index)"
@@ -45,7 +47,7 @@ import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 
 import Vue from 'vue';
-import Card from './Card.vue';
+import Card from './OnAirCard.vue';
 
 @Component({
   components: {
@@ -57,6 +59,7 @@ export default class OnAir extends Vue {
   scrollDistance: number = 0;
   $refs!: {
     onAirList: HTMLElement;
+    onAirCard: Vue[]
   }
   // data
   // computed
@@ -75,18 +78,15 @@ export default class OnAir extends Vue {
   get activeTab (): number {
     return this.getActiveTabFromSelect(this.selectedIdx, this.selectedType);
   }
+  get maxScrollDistance (): number {
+    let refs: Vue[] = this.$refs.onAirCard;
+    let lastBox: ClientRect = refs[refs.length-1].$el.getBoundingClientRect();
+    return lastBox.top + lastBox.height - window.innerHeight;
+  }
 
   // methods
   @Action('Video/selectVideo')
   dispatchSelect!: any;
-  get maxScrollDistance (): number {
-    let maxDist = 22 + 15 + 20; // from title
-    maxDist += 80+21+21+1; // from active tab
-    maxDist += (80+15+15+1) * (this.lives.length + this.records.length - 1);// from the rest
-    maxDist += 71; // from top nav
-    maxDist -= window.innerHeight; // minus window height
-    return maxDist;
-  }
 
   doSelect (active: number) {
     this.dispatchSelect(this.getSelectFromActiveTab(active));
@@ -127,74 +127,10 @@ export default class OnAir extends Vue {
 </script>
 
 <style lang="less" scoped>
-@import '../../assets/styles/variables.less';
-@counter_distance: 20px;
-.generate-counters(@n, @i: 1) when (@i =< @n) {
-  .live-list-count-@{i} {
-    position: absolute;
-    top: @counter_distance - @i * @counter_distance;
-    width: 41px;
-    height: 22px;
-    display: block;
-    line-height: 22px;
-    text-align: center;
-  }
-  .generate-counters(@n, (@i + 1));
-}
-
-.live-list-container {
-  position: relative;
-}
-.live-counter-border.medium {
-  left: 35px;
-}
-.live-counter-border.large {
-  left: 40px;
-}
-.live-counter-border {
-  width: 41px;
-  height: 29px;
-  background: url(/static/num_bg.png) left center no-repeat;
-  position: absolute;
-  top: -3px;
-}
-.live-list-title.medium {
-  margin: 15px 0 15px 35px;
-}
-.live-list-title.large {
-  margin: 15px 0 20px 40px;
-}
-.live-list-title {
-  font-family: "Microsoft Yahei";
-  color: #f0f0f0;
-  font-size: @font-large;
-  position: relative;
-  overflow: hidden;
-  height: 22px;
-  line-height: 1;
-
-  .live-list-counter-anime {
-    animation: slide-in-from-top 0.5s;
-    .generate-counters(6);
-  } // end of live-list-counter-anime
-  h2 {
-    padding-left: 51px;
-    font-weight: normal;
-    margin-top: -2px;
-  }
-}
+@import './style.less';
 .live-list {
   width: 390px;
   margin-left: @margin-medium;
 }
 
-// animation
-@keyframes slide-in-from-top {
-  0% {
-    transform: translateY();
-  }
-  100% {
-    transform: translateY(@counter_distance*5);
-  }
-}
 </style>

@@ -3,12 +3,20 @@
     class="right-nav-container"
     v-bind:class="sizeClass"
   >
-    <OnAir
-      v-if="showOnAir"
-    />
-    <LiveTrailer
-      v-else
-    />
+    <div
+      class="onair-slider"
+      v-bind:key="'onair'"
+      v-bind:class="{'slide-out':!showOnAir, 'slide-in':showOnAir}"
+    >
+      <OnAir />
+    </div>
+    <div
+      class="trailer-slider"
+      v-bind:key="'trailer'"
+      v-bind:class="{'slide-in':!showOnAir, 'slide-out':showOnAir}"
+    >
+      <LiveTrailer />
+    </div>
   </div>
 </template>
 
@@ -21,9 +29,9 @@ import { VideoInfo,VideoType } from '../../types';
 
 import Vue from 'vue';
 import OnAir from './OnAir.vue';
-import LiveTrailer from './LiveTrailer.vue';
-// fakedata
-import * as fakeData from './fakedata.json';
+import LiveTrailer from './Trailer.vue';
+// ts variable
+
 @Component({
   components: {
     OnAir,
@@ -58,7 +66,6 @@ export default class RightNav extends Vue {
       }
     }
   }
-
   mounted (this: RightNav) {
     window.addEventListener('scroll', this.onScroll);
   }
@@ -86,4 +93,42 @@ export default class RightNav extends Vue {
   height: 100%;
   min-height: 100%;
 }
+
+.onair-slider,
+.trailer-slider {
+  height: 100vh;
+  overflow:hidden;
+  transition: transform 0.5s;
+}
+
+.onair-slider.slide-in,
+.trailer-slider.slide-out {
+  transform: translateY(0);
+}
+.onair-slider.slide-out {
+  transform: translateY(-100%);
+}
+.trailer-slider.slide-in {
+  transform: translateY(-100%);
+}
+
+// animation
+// .slide-enter-active {
+//   transition: all 0.5s ease;
+// }
+// .slide-leave-active {
+//   transition: all 0.5s ease;
+// }
+// .onair-slider.slide-enter {
+//   transform: translateY(-100%);
+// }
+// .onair-slider.slide-leave-to {
+//   transform: translateY(-100%);
+// }
+// .trailer-slider.slide-enter-to {
+//   transform: translateY(-100%);
+// }
+// .trailer-slider.slide-leave-to {
+//   transform: translateY(100%);
+// }
 </style>

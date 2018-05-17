@@ -1,20 +1,18 @@
 import * as raw from './fakedata.json';
 // video.ts
 import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
-import { RootState, VideoInfo, VideoType } from '../types';
-import * as moment from 'moment';
+import { RootState, VideoInfo, VideoType,TrailerInfo } from '../types';
+import moment from 'moment';
 
 // types
 export interface Video {
   lives: VideoInfo[];
   records: VideoInfo[];
-  trailers: Trailer[];
+  trailers: TrailerInfo[];
   selectedIdx: number;
   selectedType: VideoType;
 }
-export interface Trailer extends VideoInfo {
-  timeOnAir: moment.Moment;
-}
+
 interface SelectInfo {
   idx: number;
   type: VideoType;
@@ -36,17 +34,26 @@ export const getters: GetterTree<Video, RootState> = {
   recordList (state): VideoInfo[] {
     return state.records;
   },
-  trailerList (state): Trailer[] {
+  trailerList (state): TrailerInfo[] {
     return state.trailers;
   },
-  sortedTrailerList (state): Trailer[] {
-    let trailers = state.trailers.sort(function (t1: Trailer, t2: Trailer): number {
-      return t1.timeOnAir.unix() - t2.timeOnAir.unix();
-    });
-    // let trailers = state.trailers.sort(function (t1: Trailer, t2: Trailer): number) {
-    //   return t1.timeOnAir.unix() - t2.timeOnAir.unix();
-    // }
-    return state.trailers;
+  trailerIdxByDay (state,getters): number[] {
+    let sortedList = getters.trailerList;
+    // timestamp in second
+    // beginning of the day for the first video
+    let startMoment: moment.Moment = sortedList[0].timeOnAir;
+    let secondsInDay: number = 24 * 3600;
+    let out: number[] = [0];
+    for (let i = 1; i < sortedList.length; i++) {
+      let t: TrailerInfo = sortedList[i];
+      if (!startMoment.isSame(t.timeOnAir,'d')) {
+        out.push(i);
+        startMoment = t.timeOnAir;
+      }
+    }
+    if (out[out.length-1] != sortedList.length-1)
+      out.push(sortedList.length-1);
+    return out;
   },
   selectedIdx (state): number {
     return state.selectedIdx;
@@ -74,12 +81,15 @@ export const actions: ActionTree<Video, RootState> = {
     let liveList = allVideos.filter((v: VideoInfo) => v.type === VideoType.live);
     let recordList = allVideos.filter((v: VideoInfo) => v.type === VideoType.record);
     let trailerList = allVideos.filter((v: any) => v.type === VideoType.trailer);
-    // function parseTrailerTime (v: extend VideoInfo) {
-    // }
+    // get time on air
     trailerList = trailerList.map(function (video: any): VideoInfo {
       return { ...video,
         'timeOnAir': moment(video.date + ' ' + video.time,'YYYY-MM-DD HH:mm')
       };
+    });
+    // sort
+    trailerList.sort(function (t1: TrailerInfo, t2: TrailerInfo): number {
+      return t1.timeOnAir.unix() - t2.timeOnAir.unix();
     });
     commit('updateVideos', { liveList, recordList, trailerList });
   },

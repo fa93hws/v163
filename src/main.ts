@@ -18,6 +18,8 @@ Vue.use(Vuex);
 Vue.config.productionTip = false;
 
 // preloads
+
+// store
 store.dispatch('Dimension/onWindowResize');
 store.dispatch('Video/fetchData');
 window.addEventListener('resize', () => {

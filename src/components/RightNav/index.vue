@@ -34,7 +34,7 @@ export default class RightNav extends Vue {
   // data
   showOnAir: boolean = true;
   // computed
-  @Getter('Dimension/className') sizeClass!: string;
+  @Getter('Dimension/classNameTwo') sizeClass!: string;
 
   // methods
   @Action('DOMHome/mouseEnterRightNav')
@@ -44,10 +44,18 @@ export default class RightNav extends Vue {
 
   onScroll (): void {
     let scroll = window.scrollY;
-    if (scroll >= 460 && this.showOnAir) {
-      this.showOnAir = false;
-    } else if (scroll < 460 && !this.showOnAir){
-      this.showOnAir = true;
+    if (this.sizeClass === 'large') {
+      if (scroll >= 460 && this.showOnAir) {
+        this.showOnAir = false;
+      } else if (scroll < 460 && !this.showOnAir) {
+        this.showOnAir = true;
+      }
+    } else {
+      if (scroll >= 250 && this.showOnAir) {
+        this.showOnAir = false;
+      } else if (scroll < 250 && !this.showOnAir) {
+        this.showOnAir = true;
+      }
     }
   }
 
@@ -61,7 +69,6 @@ export default class RightNav extends Vue {
 </script>
 
 <style lang="less" scoped>
-.right-nav-container.small,
 .right-nav-container.medium {
   background: url(/static/right_side_bg1.png) repeat-y;
   width: 320px;

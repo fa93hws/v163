@@ -133,7 +133,6 @@ export default class OnAir extends Vue {
   .live-list-count-@{i} {
     position: absolute;
     top: @counter_distance - @i * @counter_distance;
-    top: 0px;
     width: 41px;
     height: 22px;
     display: block;

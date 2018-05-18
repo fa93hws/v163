@@ -6,8 +6,11 @@
     <ul
       v-show="!showOnAir"
       v-bind:class="['float-toolbar',sizeClass]">
-      <li class = 'float-toolbar-comment clickable'></li>
-      <li class = 'float-toolbar-totop clickable'></li>
+      <li class = 'float-toolbar-comment clickable'/>
+      <li
+        class = 'float-toolbar-totop clickable'
+        @mousedown="toTop"
+      />
     </ul>
     <!-- bottom content -->
   </div>
@@ -22,7 +25,7 @@ import { Getter } from 'vuex-class';
 
 import Vue from 'vue';
 import HomeMain from '../components/home-main.vue';
-import RightNav from '../components/right-nav/index.vue';
+import RightNav from '../components/home-right-nav/index.vue';
 
 @Component({
   components: {
@@ -38,6 +41,10 @@ export default class Home extends Vue {
   // methods
   onNavToggle(showOnAir: boolean): void {
     this.showOnAir = showOnAir;
+  }
+  toTop (): void {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
   }
 }
 </script>

@@ -1,8 +1,10 @@
 <template>
   <div class="hollow-dots-spinner">
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
+    <div class="dots-wrapper">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
   </div>
 </template>
 
@@ -21,16 +23,24 @@ export default class LoadingSpinner extends Vue {
   box-sizing: border-box;
 }
 
+.dots-wrapper {
+  position: relative;
+  width: 150px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
 .hollow-dots-spinner {
-  height: 15px;
-  width: calc(30px * 3);
+  height: 20px;
+  width: calc(40px * 3);
 }
 
 .hollow-dots-spinner .dot {
-  width: 15px;
-  height: 15px;
-  margin: 0 calc(15px / 2);
-  border: calc(15px / 5) solid #333;
+  width: 20px;
+  height: 20px;
+  margin: 0 calc(20px / 2);
+  border: calc(20px / 5) solid red;
   border-radius: 50%;
   float: left;
   transform: scale(0);

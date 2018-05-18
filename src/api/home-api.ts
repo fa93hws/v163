@@ -1,9 +1,5 @@
 import axios from 'axios';
 
-export interface BannerImgsReply {
-  img: string[];
-  success: boolean;
-}
 interface IHomeApis {
   baseUrl: string;
   fetchBannerImgs: () => Promise<any>;

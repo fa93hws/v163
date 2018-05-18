@@ -16,3 +16,9 @@ export interface VideoInfo {
 export interface TrailerInfo extends VideoInfo {
   timeOnAir: moment.Moment;
 }
+// api
+export interface BannerImgsReply {
+  img: string[];
+  success: boolean;
+  description: string[];
+}

@@ -54,7 +54,7 @@ import { Watch } from 'vue-property-decorator';
 import Component from 'vue-class-component';
 
 import Vue, { VNode } from 'vue';
-import Utils from '../api/Utils';
+import Utils from '../api/utils';
 
 @Component
 export default class HomeMainLive extends Vue {

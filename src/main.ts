@@ -1,8 +1,9 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
-import App from './App.vue';
+import App from './app.vue';
 import router from './router';
+import axios from 'axios';
 
 // vuetify
 import Vuetify from 'vuetify';
@@ -18,13 +19,19 @@ Vue.use(Vuex);
 Vue.config.productionTip = false;
 
 // preloads
-
 // store
 store.dispatch('Dimension/onWindowResize');
 store.dispatch('Video/fetchData');
 window.addEventListener('resize', () => {
   store.dispatch('Dimension/onWindowResize');
 });
+// axios
+axios.interceptors.response.use((response: any) => {
+  if (response.data.success) return response;
+  else return Promise.reject('failed');
+}, (error: any) => {
+  return Promise.reject(error);
+})
 
 const vueApp = new Vue({
   el: '#app',

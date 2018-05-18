@@ -4,6 +4,7 @@
     v-bind:style="{width:liveMainWidth+'px'}"
   >
     <HomeMainLive />
+    <HomeBanner />
   </div>
 </template>
 
@@ -15,11 +16,13 @@ import { Watch } from 'vue-property-decorator';
 import Component from 'vue-class-component';
 
 import Vue from 'vue';
-import HomeMainLive from './HomeMainLive.vue';
+import HomeMainLive from './home-main-live.vue';
+import HomeBanner from '../components/home-banner.vue';
 
 @Component({
   components: {
-    HomeMainLive
+    HomeMainLive,
+    HomeBanner
   }
 })
 export default class HomeMain extends Vue {

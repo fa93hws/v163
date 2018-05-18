@@ -45,9 +45,10 @@ import { VideoInfo,VideoType } from '../../types';
 import { Getter,Action } from 'vuex-class';
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
+import { navType } from './index.vue';
 
 import Vue from 'vue';
-import Card from './OnAirCard.vue';
+import Card from './on-air-card.vue';
 
 @Component({
   components: {
@@ -56,12 +57,12 @@ import Card from './OnAirCard.vue';
 })
 export default class OnAir extends Vue {
   // type
-  scrollDistance: number = 0;
   $refs!: {
     onAirList: HTMLElement;
     onAirCard: Vue[]
   };
   // data
+    scrollDistance: number = 0;
   // computed
   @Getter('Video/liveList') lives!: VideoInfo[];
   @Getter('Video/recordList') records!: VideoInfo[];
@@ -81,7 +82,7 @@ export default class OnAir extends Vue {
   get maxScrollDistance (): number {
     let refs: Vue[] = this.$refs.onAirCard;
     let lastBox: ClientRect = refs[refs.length - 1].$el.getBoundingClientRect();
-    return lastBox.top + lastBox.height - window.innerHeight;
+    return lastBox.top + lastBox.height - window.outerHeight;
   }
 
   // methods
@@ -115,12 +116,11 @@ export default class OnAir extends Vue {
     let tempScrollDist = this.scrollDistance - e.deltaY;
     if (tempScrollDist > 0) {
       tempScrollDist = 0;
-      console.log('top');
     } else if (tempScrollDist < -this.maxScrollDistance) {
       tempScrollDist = -this.maxScrollDistance;
-      console.log('bottom');
     }
     this.scrollDistance = tempScrollDist;
+    this.$emit('mousewheel',tempScrollDist,this.maxScrollDistance,navType.onAir);
   }
   // mounted
 }

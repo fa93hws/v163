@@ -8,14 +8,19 @@
       v-bind:key="'onair'"
       v-bind:class="{'slide-out':!showOnAir, 'slide-in':showOnAir}"
     >
-      <OnAir />
+      <OnAir @mousewheel="calScrollBar"/>
     </div>
     <div
       class="trailer-slider"
       v-bind:key="'trailer'"
       v-bind:class="{'slide-in':!showOnAir, 'slide-out':showOnAir}"
     >
-      <LiveTrailer />
+      <LiveTrailer @mousewheel="calScrollBar"/>
+    </div>
+    <div
+      class="right-nav-scroll-bar"
+      v-bind:style="{top: rightNavScrollPos[showOnAir ? 0 : 1] + 'px'}"
+    >
     </div>
   </div>
 </template>
@@ -28,9 +33,13 @@ import { Watch } from 'vue-property-decorator';
 import { VideoInfo,VideoType } from '../../types';
 
 import Vue from 'vue';
-import OnAir from './OnAir.vue';
-import LiveTrailer from './Trailer.vue';
+import OnAir from './on-air.vue';
+import LiveTrailer from './trailer.vue';
 // ts variable
+export enum navType {
+  onAir = 0,
+  trailer = 1
+};
 
 @Component({
   components: {
@@ -41,16 +50,13 @@ import LiveTrailer from './Trailer.vue';
 export default class RightNav extends Vue {
   // data
   showOnAir: boolean = true;
+  rightNavScrollPos: number[] = [0,0];
+
   // computed
   @Getter('Dimension/classNameTwo') sizeClass!: string;
+  get windowHeight (): number { return window.outerHeight; }
 
-  // methods
-  @Action('DOMHome/mouseEnterRightNav')
-  mouseEnter!: void;
-  @Action('DOMHome/mouseLeaveRightNav')
-  mouseLeave!: void;
-
-  onScroll (): void {
+  onWindowScroll (): void {
     let scroll = window.scrollY;
     if (this.sizeClass === 'large') {
       if (scroll >= 460 && this.showOnAir) {
@@ -66,11 +72,26 @@ export default class RightNav extends Vue {
       }
     }
   }
+  calScrollBar (dist: number, maxDist: number, type: navType): void {
+    // console.log(dist)
+    // console.log(maxDist);
+    // scroll bar height = 130px
+    // 71 at top and windowHeight - 130 at bottom
+    let pos = 71 + (this.windowHeight - 130 - 71) / maxDist * Math.abs(dist);
+    pos = pos < 71 ? 71 : pos;
+    this.rightNavScrollPos = type === navType.onAir ?
+      [pos, this.rightNavScrollPos[1]] :
+      [this.rightNavScrollPos[0], pos];
+  }
+  @Watch('showOnAir')
+  onNavToggle(): void {
+    this.$emit('navChange',this.showOnAir);
+  }
   mounted (this: RightNav) {
-    window.addEventListener('scroll', this.onScroll);
+    window.addEventListener('scroll', this.onWindowScroll);
   }
   descroyed () {
-    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('scroll', this.onWindowScroll);
   }
 }
 </script>
@@ -112,23 +133,12 @@ export default class RightNav extends Vue {
   transform: translateY(-100%);
 }
 
-// animation
-// .slide-enter-active {
-//   transition: all 0.5s ease;
-// }
-// .slide-leave-active {
-//   transition: all 0.5s ease;
-// }
-// .onair-slider.slide-enter {
-//   transform: translateY(-100%);
-// }
-// .onair-slider.slide-leave-to {
-//   transform: translateY(-100%);
-// }
-// .trailer-slider.slide-enter-to {
-//   transform: translateY(-100%);
-// }
-// .trailer-slider.slide-leave-to {
-//   transform: translateY(100%);
-// }
+// scorllbar
+.right-nav-scroll-bar {
+  width: 10px;
+  height: 130px;
+  position: fixed;
+  right: 0;
+  background: black;
+}
 </style>

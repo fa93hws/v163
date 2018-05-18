@@ -46,7 +46,7 @@ import Component from 'vue-class-component';
 import { VideoInfo,VideoType } from '../../types';
 
 import Vue from 'vue';
-import Utils from '../../api/Utils';
+import Utils from '../../api/utils';
 
 @Component
 export default class Card extends Vue {

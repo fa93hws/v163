@@ -61,10 +61,11 @@ import { VideoInfo,TrailerInfo } from '../../types';
 import { Prop } from 'vue-property-decorator';
 import { Getter,Action } from 'vuex-class';
 import Component from 'vue-class-component';
+import { navType } from './index.vue';
 
 import Vue from 'vue';
 import moment from 'moment';
-import Card from './TrailerCard.vue';
+import Card from './trailer-card.vue';
 
 @Component({
   components: {
@@ -97,7 +98,7 @@ export default class LiveTrailer extends Vue {
   get maxScrollDistance (): number {
     let refs: Vue[] = this.$refs.trailerCards;
     let lastBox: ClientRect = refs[refs.length - 1].$el.getBoundingClientRect();
-    return lastBox.top + lastBox.height - window.innerHeight;
+    return lastBox.top + lastBox.height - window.outerHeight;
   }
   // method
   getDayDescription (trailer: TrailerInfo): string {
@@ -114,12 +115,11 @@ export default class LiveTrailer extends Vue {
     let tempScrollDist = this.scrollDistance - e.deltaY;
     if (tempScrollDist > 0) {
       tempScrollDist = 0;
-      console.log('top');
     } else if (tempScrollDist < -this.maxScrollDistance) {
       tempScrollDist = -this.maxScrollDistance;
-      console.log('bottom');
     }
     this.scrollDistance = tempScrollDist;
+    this.$emit('mousewheel',tempScrollDist,this.maxScrollDistance,navType.trailer);
   }
 }
 </script>

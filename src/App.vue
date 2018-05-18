@@ -9,7 +9,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 
-import TopNav from '@/components/TopNav.vue';
+import TopNav from '@/components/top-nav.vue';
 
 @Component({
   components: {

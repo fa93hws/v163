@@ -73,8 +73,6 @@ export default class RightNav extends Vue {
     }
   }
   calScrollBar (dist: number, maxDist: number, type: navType): void {
-    // console.log(dist)
-    // console.log(maxDist);
     // scroll bar height = 130px
     // 71 at top and windowHeight - 130 at bottom
     let pos = 71 + (this.windowHeight - 130 - 71) / maxDist * Math.abs(dist);
@@ -89,6 +87,8 @@ export default class RightNav extends Vue {
   }
   mounted (this: RightNav) {
     window.addEventListener('scroll', this.onWindowScroll);
+    this.calScrollBar(0,1,navType.onAir);
+    this.calScrollBar(0,1,navType.trailer);
   }
   descroyed () {
     window.removeEventListener('scroll', this.onWindowScroll);

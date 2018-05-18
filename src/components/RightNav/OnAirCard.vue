@@ -43,7 +43,7 @@
 import { Getter } from 'vuex-class';
 import { Watch, Prop } from 'vue-property-decorator';
 import Component from 'vue-class-component';
-import { VideoInfo,VideoType } from '@/types';
+import { VideoInfo,VideoType } from '../../types';
 
 import Vue from 'vue';
 import Utils from '../../api/Utils';

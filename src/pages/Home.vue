@@ -14,7 +14,7 @@ import { Getter } from 'vuex-class';
 
 import Vue from 'vue';
 import HomeMain from '../components/HomeMain.vue';
-import RightNav from '../components/RightNav';
+import RightNav from '../components/RightNav.vue';
 
 @Component({
   components: {

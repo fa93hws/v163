@@ -43,12 +43,12 @@
 
 <script lang="ts">
 // types
-import {Getter} from 'vuex-class';
+import { Getter } from 'vuex-class';
 import Component from 'vue-class-component';
-import {Dimension} from '../store/Dimension';
-import {Watch} from 'vue-property-decorator';
+import { Dimension } from '../store/Dimension';
+import { Watch } from 'vue-property-decorator';
 
-import Vue from 'vue'
+import Vue from 'vue';
 @Component
 export default class TopNav extends Vue {
   // data

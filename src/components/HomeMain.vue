@@ -9,12 +9,12 @@
 
 <script lang="ts">
 // types
-import {Getter} from 'vuex-class';
-import {Dimension} from '../store/Dimension';
-import {Watch} from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
+import { Dimension } from '../store/Dimension';
+import { Watch } from 'vue-property-decorator';
 import Component from 'vue-class-component';
 
-import Vue from 'vue'
+import Vue from 'vue';
 import HomeMainLive from './HomeMainLive.vue';
 
 @Component({

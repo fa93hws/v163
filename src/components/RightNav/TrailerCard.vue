@@ -22,7 +22,7 @@ import Vue from 'vue';
 
 @Component
 export default class TrailerCard extends Vue {
-  @Prop({required: true})
+  @Prop({ required: true })
   trailerInfo!: TrailerInfo;
   @Getter('Dimension/classNameTwo') sizeClass!: string;
 }

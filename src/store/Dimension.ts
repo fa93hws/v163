@@ -45,21 +45,21 @@ export const getters: GetterTree<Dimension, RootState> = {
 
 // actions
 export const actions: ActionTree<Dimension, RootState> = {
-  onWindowResize: function({ commit }): void {
+  onWindowResize: function ({ commit }): void {
     commit('updateDimensions', window.innerWidth);
   }
 };
 
 // mutations
 export const mutations: MutationTree<Dimension> = {
-  updateDimensions: function(state, windowWidth: number): void {
+  updateDimensions: function (state, windowWidth: number): void {
     state.windowWidth = windowWidth;
     if (windowWidth >= 1900) {
       state.className = 'large';
       state.rightNavWidth = 420;
       state.livePlayerWidth = 960;
       state.livePlayerHeight = 540;
-    } else{
+    } else {
       state.className = windowWidth >= 1600 ? 'medium' : 'small';
       state.rightNavWidth = 320;
       state.livePlayerWidth = 640;

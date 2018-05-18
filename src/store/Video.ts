@@ -51,8 +51,9 @@ export const getters: GetterTree<Video, RootState> = {
         startMoment = t.timeOnAir;
       }
     }
-    if (out[out.length-1] != sortedList.length-1)
-      out.push(sortedList.length-1);
+    if (out[out.length - 1] !== sortedList.length - 1) {
+      out.push(sortedList.length - 1);
+    }
     return out;
   },
   selectedIdx (state): number {

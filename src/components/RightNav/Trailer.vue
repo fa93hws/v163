@@ -64,10 +64,10 @@ import Component from 'vue-class-component';
 
 import Vue from 'vue';
 import moment from 'moment';
-import Card from './TrailerCard';
+import Card from './TrailerCard.vue';
 
 @Component({
-  components:{
+  components: {
     Card
   }
 })
@@ -87,7 +87,7 @@ export default class LiveTrailer extends Vue {
   get allTrailers (): TrailerInfo[][] {
     let idxs: number[] = [...this.trailerIdxByDay.filter((nouse: number,index: number) => index > 0), this.trailerCount];
     var lastIdx: number = 0; // only used for the next mapping
-    let trailers: TrailerInfo[][] = idxs.map((idx:number) => {
+    let trailers: TrailerInfo[][] = idxs.map((idx: number) => {
       let temp: TrailerInfo[] = this.sortedList.slice(lastIdx,idx);
       lastIdx = idx;
       return temp;
@@ -96,7 +96,7 @@ export default class LiveTrailer extends Vue {
   } // trailers
   get maxScrollDistance (): number {
     let refs: Vue[] = this.$refs.trailerCards;
-    let lastBox: ClientRect = refs[refs.length-1].$el.getBoundingClientRect();
+    let lastBox: ClientRect = refs[refs.length - 1].$el.getBoundingClientRect();
     return lastBox.top + lastBox.height - window.innerHeight;
   }
   // method
@@ -112,10 +112,10 @@ export default class LiveTrailer extends Vue {
   }
   scrollEvent (e: WheelEvent): void {
     let tempScrollDist = this.scrollDistance - e.deltaY;
-    if (tempScrollDist > 0){
+    if (tempScrollDist > 0) {
       tempScrollDist = 0;
       console.log('top');
-    } else if (tempScrollDist < -this.maxScrollDistance){
+    } else if (tempScrollDist < -this.maxScrollDistance) {
       tempScrollDist = -this.maxScrollDistance;
       console.log('bottom');
     }

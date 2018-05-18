@@ -60,7 +60,7 @@ export default class OnAir extends Vue {
   $refs!: {
     onAirList: HTMLElement;
     onAirCard: Vue[]
-  }
+  };
   // data
   // computed
   @Getter('Video/liveList') lives!: VideoInfo[];
@@ -80,7 +80,7 @@ export default class OnAir extends Vue {
   }
   get maxScrollDistance (): number {
     let refs: Vue[] = this.$refs.onAirCard;
-    let lastBox: ClientRect = refs[refs.length-1].$el.getBoundingClientRect();
+    let lastBox: ClientRect = refs[refs.length - 1].$el.getBoundingClientRect();
     return lastBox.top + lastBox.height - window.innerHeight;
   }
 
@@ -113,10 +113,10 @@ export default class OnAir extends Vue {
   }
   scrollEvent (e: WheelEvent): void {
     let tempScrollDist = this.scrollDistance - e.deltaY;
-    if (tempScrollDist > 0){
+    if (tempScrollDist > 0) {
       tempScrollDist = 0;
       console.log('top');
-    } else if (tempScrollDist < -this.maxScrollDistance){
+    } else if (tempScrollDist < -this.maxScrollDistance) {
       tempScrollDist = -this.maxScrollDistance;
       console.log('bottom');
     }

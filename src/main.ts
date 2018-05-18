@@ -27,7 +27,7 @@ window.addEventListener('resize', () => {
 });
 // axios
 axios.interceptors.response.use((response: any) => {
-  if (response.data.success) return response;
+  if (response.status === 200 && response.data.success) return response.data;
   else return Promise.reject('failed');
 }, (error: any) => {
   return Promise.reject(error);

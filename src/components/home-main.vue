@@ -4,7 +4,10 @@
     v-bind:style="{width:liveMainWidth+'px'}"
   >
     <HomeMainLive />
-    <HomeBanner />
+    <div class = 'lower-content'>
+      <div class = 'empty-element'>&nbsp;</div>
+      <HomeBanner class = 'home-banner'/>
+    </div>
   </div>
 </template>
 
@@ -33,9 +36,14 @@ export default class HomeMain extends Vue {
 <style lang="less">
 .main {
   margin-top: 71px; // 70 from TopNav and 1 from border
-  height: 2000px;
   display: inline-block;
-  background:silver;
   z-index: 10;
+}
+.lower-content {
+  height: 2000px;
+  background: #182231;
+}
+.home-banner {
+  margin-top: 45px;
 }
 </style>

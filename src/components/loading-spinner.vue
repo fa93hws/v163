@@ -17,6 +17,7 @@ export default class LoadingSpinner extends Vue {
 
 <style scoped>
 .hollow-dots-spinner, .hollow-dots-spinner * {
+  background: transparent;
   box-sizing: border-box;
 }
 

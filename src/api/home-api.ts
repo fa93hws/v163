@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export interface BannerImgsReply {
-  urls: string[];
+  img: string[];
   success: boolean;
 }
 interface IHomeApis {
@@ -12,7 +12,7 @@ interface IHomeApis {
 export const HomeApis: IHomeApis = {
   baseUrl: 'https://www.easy-mock.com/mock/5af68f27eecc191f0f5604a0/tv',
   fetchBannerImgs (): Promise<any> {
-    let url: string = this.baseUrl + '/homebanner_f';
+    let url: string = this.baseUrl + '/homebanner';
     return axios.get(url);
   }
 }

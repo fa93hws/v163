@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 import { RootState } from '../types';
-import { Dimension } from './Dimension';
-import { Video } from './Video';
+import { Dimension } from './dimension';
+import { Video } from './video';
 import { LazyStore } from './lazy-store';
 
 Vue.use(Vuex);

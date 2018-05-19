@@ -1,7 +1,7 @@
 <template>
   <div v-bind:class="['banner-container center',sizeClass]">
     <!-- loading spinner -->
-    <LoadingSpinner 
+    <loading-spinner 
       class = 'banner-frame vertical-center center'
       v-if="!receiveResponse"
     />
@@ -29,7 +29,7 @@
           v-for="(url,idx) in imgUrls"
           v-bind:key="idx"
         >
-          <LoadingSpinner 
+          <loading-spinner 
             class = 'banner-image loading vertical-center center'
             v-show="!imgLoaded[idx]"
           />
@@ -96,6 +96,7 @@ import { Getter } from 'vuex-class';
 import Vue from 'vue';
 import LoadingSpinner from './loading-spinner.vue';
 import { HomeApis } from '../api/home-api';
+import LazyImg from './lazy-img.vue';
 
 @Component({
   components: {
@@ -105,7 +106,7 @@ import { HomeApis } from '../api/home-api';
 export default class HomeBanner extends Vue {
   $refs!: {
     carousel: HTMLElement
-  }
+  };
   // data
   imgUrls: string[] = [];
   imgDesc: string[] = [];
@@ -116,7 +117,7 @@ export default class HomeBanner extends Vue {
   isControlButtonShown: boolean = false;
   // computed
   get numImg (): number { return this.imgUrls.length; }
-  get imgWidth(): number {return this.sizeClass=='large' ? 600 : 460;}
+  get imgWidth (): number { return this.sizeClass === 'large' ? 600 : 460; }
   @Getter('Dimension/classNameTwo') sizeClass!: string;
   // methods
   prepareCarousel (): void {
@@ -130,7 +131,7 @@ export default class HomeBanner extends Vue {
     }
   }
   previous (): void {
-    if (this.currentImgIdx == 0) {
+    if (this.currentImgIdx === 0) {
       this.resetToLast();
     } else {
       this.currentImgIdx--;
@@ -142,7 +143,7 @@ export default class HomeBanner extends Vue {
     this.$nextTick(() => {
       this.$refs.carousel.classList.add('animate');
       this.currentImgIdx++;
-    })
+    });
   }
   resetToLast (): void {
     this.$refs.carousel.classList.remove('animate');
@@ -150,7 +151,7 @@ export default class HomeBanner extends Vue {
     this.$nextTick(() => {
       this.$refs.carousel.classList.add('animate');
       this.currentImgIdx--;
-    })
+    });
   }
   doTransform (): void {
     this.$refs.carousel.style.transform = 'translateX(-' + this.currentImgIdx * this.imgWidth + 'px)';
@@ -160,17 +161,17 @@ export default class HomeBanner extends Vue {
   }
   async fetchImgs () {
     HomeApis.fetchBannerImgs().then((data: BannerImgsReply) => {
-      this.imgUrls = [data.img[data.img.length-1], ...data.img, data.img[0]];
-      this.imgDesc = [data.description[data.description.length-1], ...data.description, data.description[0]];
+      this.imgUrls = [data.img[data.img.length - 1], ...data.img, data.img[0]];
+      this.imgDesc = [data.description[data.description.length - 1], ...data.description, data.description[0]];
       this.imgLoaded.push.apply(this.imgLoaded,Array(this.imgUrls.length).fill(false));
       this.receiveResponse = true;
       this.$nextTick(() => {
         this.prepareCarousel();
-      })
+      });
     }).catch((error: any) => {
       console.log(error);
       this.receiveResponse = true;
-    })
+    });
   }
   @Watch('currentImgIdx')
   onIdxChange (after: number, before: number) {

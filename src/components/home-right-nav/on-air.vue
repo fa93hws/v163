@@ -62,7 +62,7 @@ export default class OnAir extends Vue {
     onAirCard: Vue[]
   };
   // data
-    scrollDistance: number = 0;
+  scrollDistance: number = 0;
   // computed
   @Getter('Video/liveList') lives!: VideoInfo[];
   @Getter('Video/recordList') records!: VideoInfo[];

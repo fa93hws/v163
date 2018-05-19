@@ -1,7 +1,7 @@
 <template>
   <div class = 'home'>
-    <HomeMain /><!-- remove the space
- --><RightNav @navChange="onNavToggle"/>
+    <home-main /><!-- remove the space
+ --><right-nav @navChange="onNavToggle"/>
     <!-- float tool bar -->
     <ul
       v-show="!showOnAir"
@@ -39,7 +39,7 @@ export default class Home extends Vue {
   // computed
   @Getter('Dimension/className') sizeClass!: string;
   // methods
-  onNavToggle(showOnAir: boolean): void {
+  onNavToggle (showOnAir: boolean): void {
     this.showOnAir = showOnAir;
   }
   toTop (): void {

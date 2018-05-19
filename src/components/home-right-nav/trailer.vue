@@ -75,7 +75,7 @@ import Card from './trailer-card.vue';
 export default class LiveTrailer extends Vue {
   $refs!: {
     trailerCards: Vue[];
-  }
+  };
   // data
   scrollDistance: number = 0;
   // computed
@@ -87,7 +87,7 @@ export default class LiveTrailer extends Vue {
   }
   get allTrailers (): TrailerInfo[][] {
     let idxs: number[] = [...this.trailerIdxByDay.filter((nouse: number,index: number) => index > 0), this.trailerCount];
-    var lastIdx: number = 0; // only used for the next mapping
+    let lastIdx: number = 0; // only used for the next mapping
     let trailers: TrailerInfo[][] = idxs.map((idx: number) => {
       let temp: TrailerInfo[] = this.sortedList.slice(lastIdx,idx);
       lastIdx = idx;

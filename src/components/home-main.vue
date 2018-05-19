@@ -3,11 +3,14 @@
     class = 'main'
     v-bind:style="{width:liveMainWidth+'px'}"
   >
-    <HomeMainLive />
+    <home-main-live />
     <div class = 'lower-content'>
       <div class = 'empty-element'>&nbsp;</div>
-      <HomeBanner class = 'home-banner'/>
+      <home-banner class = 'home-banner'/>
     </div>
+    <lazy-img
+      v-bind:imgUrl="'https://upload.wikimedia.org/wikipedia/commons/4/43/Very_Large_Array%2C_2012.jpg'"
+    />
   </div>
 </template>
 
@@ -21,11 +24,13 @@ import Component from 'vue-class-component';
 import Vue from 'vue';
 import HomeMainLive from './home-main-live.vue';
 import HomeBanner from '../components/home-banner.vue';
+import LazyImg from './lazy-img.vue';
 
 @Component({
   components: {
     HomeMainLive,
-    HomeBanner
+    HomeBanner,
+    LazyImg
   }
 })
 export default class HomeMain extends Vue {

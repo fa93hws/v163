@@ -8,14 +8,14 @@
       v-bind:key="'onair'"
       v-bind:class="{'slide-out':!showOnAir, 'slide-in':showOnAir}"
     >
-      <OnAir @mousewheel="calScrollBar"/>
+      <on-air @mousewheel="calScrollBar"/>
     </div>
     <div
       class="trailer-slider"
       v-bind:key="'trailer'"
       v-bind:class="{'slide-in':!showOnAir, 'slide-out':showOnAir}"
     >
-      <LiveTrailer @mousewheel="calScrollBar"/>
+      <live-trailer @mousewheel="calScrollBar"/>
     </div>
     <div
       class="right-nav-scroll-bar"
@@ -39,7 +39,7 @@ import LiveTrailer from './trailer.vue';
 export enum navType {
   onAir = 0,
   trailer = 1
-};
+}
 
 @Component({
   components: {
@@ -82,7 +82,7 @@ export default class RightNav extends Vue {
       [this.rightNavScrollPos[0], pos];
   }
   @Watch('showOnAir')
-  onNavToggle(): void {
+  onNavToggle (): void {
     this.$emit('navChange',this.showOnAir);
   }
   mounted (this: RightNav) {

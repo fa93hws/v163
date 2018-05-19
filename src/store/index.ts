@@ -3,6 +3,7 @@ import Vuex, { StoreOptions } from 'vuex';
 import { RootState } from '../types';
 import { Dimension } from './Dimension';
 import { Video } from './Video';
+import { LazyStore } from './lazy-store';
 
 Vue.use(Vuex);
 
@@ -12,6 +13,7 @@ const store: StoreOptions<RootState> = {
   modules: {
     Dimension,
     Video,
+    LazyStore
   }
 };
 

@@ -22,3 +22,17 @@ export interface BannerImgsReply {
   success: boolean;
   description: string[];
 }
+// lazy store
+export enum LoadStatus {
+  notSeen = 0,
+  loading = 1,
+  loaded = 2,
+  failed = 3
+}
+export interface DispatchStatus {
+  idx: number;
+  status: LoadStatus;
+}
+export interface NewImgPayload {
+  element: HTMLElement;
+}

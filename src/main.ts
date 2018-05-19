@@ -19,12 +19,24 @@ Vue.use(Vuex);
 Vue.config.productionTip = false;
 
 // preloads
-// store
+// store - dimension
 store.dispatch('Dimension/onWindowResize');
 store.dispatch('Video/fetchData');
 window.addEventListener('resize', () => {
   store.dispatch('Dimension/onWindowResize');
 });
+// store - lazyload
+function checkAfterSecond(): void {
+  setTimeout(() => {
+    let timeInterval = 1000;
+    if (store.getters['LazyStore/isAllLoaded']) timeInterval = 60000;
+    store.dispatch('LazyStore/updateVisibleStatus');
+    checkAfterSecond();
+  },1000)
+}
+setTimeout(() => {
+  checkAfterSecond();
+},1000)
 // axios
 axios.interceptors.response.use((response: any) => {
   if (response.status === 200 && response.data.success) return response.data;

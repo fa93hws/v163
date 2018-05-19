@@ -36,3 +36,17 @@ export interface DispatchStatus {
 export interface NewImgPayload {
   element: HTMLElement;
 }
+// bottom program
+export enum ProgramType {
+  live = 0,
+  soon = 1,
+  review = 2
+}
+export interface ProgramCard {
+  imgUrl: string;
+  title: string;
+  numAudience: number;
+  type: ProgramType;
+  multiSource: boolean;
+  href: string;
+}

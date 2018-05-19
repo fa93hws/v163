@@ -2,12 +2,12 @@
   <div v-bind:class="['banner-container center',sizeClass]">
     <!-- loading spinner -->
     <loading-spinner 
-      class = 'banner-frame vertical-center center'
+      class = 'banner-frame loading-mask vertical-center center'
       v-if="!receiveResponse"
     />
     <!-- error image -->
     <div
-      class = 'banner-frame vertical-center center'
+      class = 'banner-frame loading-mask vertical-center center'
       v-else-if="numImg==0"
     >
       无
@@ -29,7 +29,12 @@
           v-for="(url,idx) in imgUrls"
           v-bind:key="idx"
         >
-          <loading-spinner 
+        <lazy-img
+          class = 'banner-image'
+          v-bind:imgUrl="imgUrls[idx]"
+          @load="imgLoaded[idx] = true"
+        />
+          <!-- <loading-spinner 
             class = 'banner-image loading vertical-center center'
             v-show="!imgLoaded[idx]"
           />
@@ -38,7 +43,7 @@
             v-bind:src="imgUrls[idx]"
             v-show="imgLoaded[idx]"
             @load="imgLoaded[idx] = true"
-          />
+          /> -->
           <!-- image description -->
           <div class = 'banner-image-description-wrapper'>
             <span class = 'barnner-image-description'>
@@ -100,7 +105,8 @@ import LazyImg from './lazy-img.vue';
 
 @Component({
   components: {
-    LoadingSpinner
+    LoadingSpinner,
+    LazyImg
   }
 })
 export default class HomeBanner extends Vue {
@@ -273,6 +279,10 @@ export default class HomeBanner extends Vue {
 // frame
 .banner-frame {
   overflow: hidden;
+}
+.banner-frame.loading-mask {
+  position: relative;
+  transform: translateY(-50%);
 }
 // carousel
 .animate {

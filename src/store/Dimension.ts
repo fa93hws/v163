@@ -46,6 +46,7 @@ export const getters: GetterTree<Dimension, RootState> = {
 // actions
 export const actions: ActionTree<Dimension, RootState> = {
   onWindowResize: function ({ commit }): void {
+    // console.log('in action');
     commit('updateDimensions', window.innerWidth);
   }
 };

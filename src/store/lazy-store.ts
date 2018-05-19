@@ -4,24 +4,21 @@ import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 interface LazyStore {
   loadStatusList: LoadStatus[];
   imgElementList: HTMLElement[];
-  unloadedList: Set<number>;
+  unloadedSet: Set<number>;
 }
+
 const state: LazyStore = {
   loadStatusList: [],
   imgElementList: [],
-  unloadedList: new Set([])
+  unloadedSet: new Set([])
 };
 
 const getters: GetterTree<LazyStore, RootState> = {
   unloadedList (state): number[] {
-    return Array.from(state.unloadedList);
+    return Array.from(state.unloadedSet);
   },
   isAllLoaded (state): boolean {
-    if (state.loadStatusList.filter((x) => x === LoadStatus.loaded).length === state.loadStatusList.length) {
-      return true;
-    } else {
-      return false;
-    }
+    return state.unloadedSet.size === 0 ? true : false;
   },
   numImgs (state): number {
     return state.loadStatusList.length;
@@ -30,6 +27,9 @@ const getters: GetterTree<LazyStore, RootState> = {
     return (idx) => {
       return state.loadStatusList[idx];
     };
+  },
+  statusList (state): LoadStatus[] {
+    return state.loadStatusList;
   }
 };
 
@@ -52,18 +52,29 @@ const actions: ActionTree<LazyStore, RootState> = {
 
 const mutations: MutationTree<LazyStore> = {
   seeImages (state,newSeenImg): void {
+    // console.log('see');
+    let temp = state.loadStatusList;
     newSeenImg.forEach((idx: number) => {
-      state.loadStatusList[idx] = LoadStatus.loading;
-      state.unloadedList.delete(idx);
+      temp[idx] = LoadStatus.loading;
     });
-  },
-  updateStatus (state, payload: DispatchStatus): void {
-    state.loadStatusList[payload.idx] = payload.status;
+    state.loadStatusList = Array.from(temp);
   },
   mountNewImg (state, payload: NewImgPayload): void {
-    state.imgElementList.push(payload.element);
-    state.loadStatusList.push(LoadStatus.notSeen);
-    state.unloadedList.add(state.imgElementList.length - 1);
+    // console.log('mount');
+    state.imgElementList = [...state.imgElementList, payload.element];
+    state.loadStatusList = [...state.loadStatusList, LoadStatus.notSeen];
+    let temp: any = state.unloadedSet;
+    temp.add(state.imgElementList.length - 1);
+    state.unloadedSet = new Set(temp);
+  },
+  imgLoaded (state, idx: number) {
+    // console.log('loaded');
+    let temp: any = state.loadStatusList;
+    temp[idx] = LoadStatus.loaded;
+    state.loadStatusList = Array.from(temp);
+    temp = state.unloadedSet;
+    temp.delete(idx);
+    state.unloadedSet = new Set(temp);
   }
 };
 

@@ -7,10 +7,8 @@
     <div class = 'lower-content'>
       <div class = 'empty-element'>&nbsp;</div>
       <home-banner class = 'home-banner'/>
+      <home-other-program />
     </div>
-    <lazy-img
-      v-bind:imgUrl="'https://upload.wikimedia.org/wikipedia/commons/4/43/Very_Large_Array%2C_2012.jpg'"
-    />
   </div>
 </template>
 
@@ -25,12 +23,14 @@ import Vue from 'vue';
 import HomeMainLive from './home-main-live.vue';
 import HomeBanner from '../components/home-banner.vue';
 import LazyImg from './lazy-img.vue';
+import HomeOtherProgram from './home-other-program/index.vue';
 
 @Component({
   components: {
     HomeMainLive,
     HomeBanner,
-    LazyImg
+    LazyImg,
+    HomeOtherProgram
   }
 })
 export default class HomeMain extends Vue {
@@ -45,10 +45,13 @@ export default class HomeMain extends Vue {
   z-index: 10;
 }
 .lower-content {
-  height: 2000px;
   background: #182231;
 }
 .home-banner {
   margin-top: 45px;
+}
+.test-image {
+  width: 800px;
+  height: 600px;
 }
 </style>

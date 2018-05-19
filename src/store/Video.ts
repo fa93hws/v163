@@ -95,6 +95,7 @@ export const actions: ActionTree<Video, RootState> = {
     commit('updateVideos', { liveList, recordList, trailerList });
   },
   selectVideo: function ({ commit }, selectInfo: SelectInfo): void {
+    // console.log('in action');
     commit('updateSelect', selectInfo);
   }
 };

@@ -85,12 +85,14 @@ export default class OnAir extends Vue {
     return lastBox.top + lastBox.height - window.outerHeight;
   }
 
-  // methods
+  // methodss
   @Action('Video/selectVideo')
   dispatchSelect!: any;
 
   doSelect (active: number) {
+    // console.log('before action');
     this.dispatchSelect(this.getSelectFromActiveTab(active));
+    // console.log('after action');
   }
   getActiveTabFromSelect (idx: number, type: VideoType): number {
     if (type === VideoType.record) {

@@ -4,7 +4,8 @@ html * {
   box-sizing: content-box;
 }
 .body {
-  min-width: 960px;  
+  min-width: 960px;
+  background: #182231;
 }
 .fixed-top {
   position: fixed;
